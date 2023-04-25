@@ -1,4 +1,4 @@
-from flask import Flask,g, render_template, request, redirect 
+from flask import Flask,g, render_template, request, redirect
 import sqlite3
 
 #app
@@ -14,24 +14,30 @@ def get_db():
 
 @app.route('/')
 def index():
-    return 'hello, world'
+    conn = sqlite3.connect("table.db")
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM contents")
+    results = cur.fetchall()
+    conn.close()
+    
+    return render_template("index.html", results=results)
 
 @app.route('/notes/create', methods=['GET', 'POST'])
 def create_note():
     if request.method == 'POST':
-        # Get the data from the form
-        title = request.form['title']
-        content = request.form['content']
+         # Get the data from the form
+         title = request.form['title']
+         content = request.form['content']
 
-        # Store the note in the database
-        get_db.execute('INSERT INTO notes (title, content) VALUES (?, ?)', (title, content))
-        get_db.commit()
+         # Store the note in the database
+         get_db.execute('INSERT INTO notes (title, content) VALUES (?, ?)', (title, content))
+         get_db.commit()
 
-        # Redirect the user to the homepage
-        return redirect('/')
+         # Redirect the user to the homepage
+         return redirect('/')
     else:
-        # Display the create note form
-        return render_template('create_note.html')
+         # Display the create note form
+         return render_template("'A.html'")
 
 if __name__ == "__main__":
     app.run(debug=True)
