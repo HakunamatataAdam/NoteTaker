@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap');
+
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    text-align: left;
+    font-family: 'Playfair Display', serif;
+    padding: 20px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #000000;
+  }
+
+.header{
+  text-align: left;
+  background-color: #E0E0E0;
+}

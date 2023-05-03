@@ -14,9 +14,9 @@ def get_db():
 
 @app.route('/')
 def index():
-    conn = sqlite3.connect("table.db")
+    conn = sqlite3.connect("notetaker.db")
     cur = conn.cursor()
-    cur.execute("SELECT * FROM contents")
+    cur.execute("SELECT * FROM note")
     results = cur.fetchall()
     conn.close()
     
@@ -27,7 +27,7 @@ def create_note():
     if request.method == 'POST':
          # Get the data from the form
          title = request.form['title']
-         content = request.form['content']
+         content = request.form['body']
 
          # Store the note in the database
          get_db.execute('INSERT INTO notes (title, content) VALUES (?, ?)', (title, content))
