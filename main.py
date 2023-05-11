@@ -25,19 +25,34 @@ def index():
 @app.route('/notes/create', methods=['GET', 'POST'])
 def create_note():
     if request.method == 'POST':
+
+        cursor = get_db().cursor()
+        new_name = request.form["title"]
+        new_description = request.form["body"]
+        sql = "INSERT INTO note(name, description) VALUES (?,?)"
+        cursor.execute(sql,(new_name, new_description))
+        get_db().commit()
+    return redirect('/')
+
          # Get the data from the form
-         title = request.form['title']
-         content = request.form['body']
+      #   title = request.form['title']
+      #   content = request.form['body']
 
          # Store the note in the database
-         get_db.execute('INSERT INTO notes (title, content) VALUES (?, ?)', (title, content))
-         get_db.commit()
+      #   get_db.execute('INSERT INTO notes (title, content) VALUES (?, ?)', (title, content))
+      #   get_db.commit()
 
          # Redirect the user to the homepage
-         return redirect('/')
-    else:
+      #   return redirect('/')
+  #  else:
          # Display the create note form
-         return render_template("'A.html'")
+    #     return render_template("'A.html'")
+
+@app.route('/note')
+def note():
+
+
+    return render_template('note.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
