@@ -10,29 +10,35 @@
 </head>
 {% block content %}
 <body>
+
+       </table>
+    <form action="/add" method="post">
+        <h3>Create new notes</h3>
+        <input type="text" name="title">
+        <input type="text" name="body">
+        <input type="integer" name="time">
+        <input type="submit" value="add" class="add">
+    </form>
             <h2>Notes</h2>
-        
+
         <div class="container">
         {% for item in results %}
         <div class="card">
             <div class="notethumb">
-                <a href="{{url_for('note')}}">{{item[3]}}</a>
+                <a href="{{url_for('note', id=item[0])}}">{{item[3]}}</a>
                 {{item[2]}}
+            </div>
+            <div>
                 <form action="/delete" method="post">
-                    <input type="hidden" name="title" value="{{item[0]}}">
-                    <input type="submit" value="delete">
+                    <input type="hidden" name="id" value="{{item[0]}}">
+                    <input type="submit" value="delete" class="delete">
                 </form>
             </div>
-        </div>    
+        </div>
+    
         {% endfor %}
         </div>
-    </table>
-    <form action="/add" method="post">
-        <h2>Create new notes</h2>
-        <input type="text" name="title">
-        <input type="text" name="body">
-        <input type="submit" value="add">
-    </form>
+ 
 </body>
 {% endblock %}
 </html>

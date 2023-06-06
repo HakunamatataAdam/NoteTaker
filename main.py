@@ -1,10 +1,10 @@
-from flask import Flask,g, render_template, request, redirect
+from flask import Flask,g, render_template, request, redirect, url_for
 import sqlite3
 
 #app
 app = Flask(__name__)
 
-DATABASE = 'table.db'
+DATABASE = 'notetaker.db'
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -22,15 +22,16 @@ def index():
     
     return render_template("index.html", results=results)
 
-@app.route('/notes/create', methods=['GET', 'POST'])
+@app.route('/add', methods=['GET', 'POST'])
 def create_note():
     if request.method == 'POST':
 
         cursor = get_db().cursor()
-        new_name = request.form["title"]
-        new_description = request.form["body"]
-        sql = "INSERT INTO note(name, description) VALUES (?,?)"
-        cursor.execute(sql,(new_name, new_description))
+        title = request.form["title"]
+        body = request.form["body"]
+        time = request.form["time"]
+        sql = "INSERT INTO note(title, body, time) VALUES (?,?,?)"
+        cursor.execute(sql,(title, body, time))
         get_db().commit()
     return redirect('/')
 
@@ -48,11 +49,28 @@ def create_note():
          # Display the create note form
     #     return render_template("'A.html'")
 
-@app.route('/note')
-def note():
+@app.route('/note/<int:id>')
+def note(id):
+    conn = sqlite3.connect('notetaker.db')
+    cur = conn.cursor()
+    result=cur.execute(
+        """ SELECT body, time, title FROM note WHERE id = ?;""",(id,)
+    ).fetchone()
+    print(result)
+
+    return render_template('note.html', result=result)
 
 
-    return render_template('note.html')
+@app.route('/delete', methods=["GET","POST"])
+def delete():
+    id = request.form['id']
+    db= get_db()
+    cursor = db.cursor()
+    sql = "DELETE FROM note WHERE id = ?"
+    cursor.execute(sql,(id,))
+    db.commit()
+
+    return redirect(url_for('index'))
 
 if __name__ == "__main__":
     app.run(debug=True)
