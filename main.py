@@ -1,16 +1,37 @@
-from flask import Flask,g, render_template, request, redirect, url_for
+from distutils.util import get_host_platform
+from flask import Flask, flash,g, render_template, request, redirect, url_for
 import sqlite3
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, PasswordField
+from wtforms.validators import InputRequired, Length, ValidationError
 
 #app
 app = Flask(__name__)
 
 DATABASE = 'notetaker.db'
+app.config['SECRET_KEY'] ='uisrth4et485tw6t76t7yf'
+
 
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
         db = g._database = sqlite3.connect(DATABASE)
     return db
+
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route("/login")
+def login():
+    return render_template('login.html')
+
+@app.route("/register")
+def register():
+    return render_template('register.html')
 
 @app.route('/')
 def index():
@@ -35,31 +56,28 @@ def create_note():
         get_db().commit()
     return redirect('/')
 
-         # Get the data from the form
-      #   title = request.form['title']
-      #   content = request.form['body']
 
-         # Store the note in the database
-      #   get_db.execute('INSERT INTO notes (title, content) VALUES (?, ?)', (title, content))
-      #   get_db.commit()
 
-         # Redirect the user to the homepage
-      #   return redirect('/')
-  #  else:
-         # Display the create note form
-    #     return render_template("'A.html'")
+@app.route('/<int:id>/edit', methods=('GET', 'POST'))
+def edit(id):
+    post = get_host_platform(id)
 
-@app.route('/note/<int:id>')
-def note(id):
-    conn = sqlite3.connect('notetaker.db')
-    cur = conn.cursor()
-    result=cur.execute(
-        """ SELECT body, time, title FROM note WHERE id = ?;""",(id,)
-    ).fetchone()
-    print(result)
+    if request.method == 'POST':
+        title = request.form['title']
+        note = request.form['note']
 
-    return render_template('note.html', result=result)
+        if not title:
+            flash('Title is required!')
+        else:
+            conn = get_db()
+            conn.execute('UPDATE posts SET title = ?, content = ?'
+                         ' WHERE id = ?',
+                         (title, note, id))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('index'))
 
+    return render_template('note.html', post=post)
 
 @app.route('/delete', methods=["GET","POST"])
 def delete():
@@ -72,5 +90,17 @@ def delete():
 
     return redirect(url_for('index'))
 
+@app.route('/note/<int:id>')
+def note(id):
+    conn = sqlite3.connect('notetaker.db')
+    cur = conn.cursor()
+    result=cur.execute(
+        """ SELECT body, time, title FROM note WHERE id = ?;""",(id,)
+    ).fetchone()
+    print(result)
+
+    return render_template('note.html', result=result)
+
 if __name__ == "__main__":
     app.run(debug=True)
+    

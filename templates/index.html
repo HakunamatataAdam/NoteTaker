@@ -9,6 +9,9 @@
     <title>contents</title>
 </head>
 {% block content %}
+{% include "header.html" %}
+
+
 <body>
 
        </table>
@@ -23,10 +26,10 @@
 
         <div class="container">
         {% for item in results %}
-        <div class="card">
+        <button><a href="{{url_for('note', id=item[0])}}">{{item[3]}}
+                <ab>{{item[2]}}</ab><div class="card">
             <div class="notethumb">
-                <a href="{{url_for('note', id=item[0])}}">{{item[3]}}</a>
-                {{item[2]}}
+
             </div>
             <div>
                 <form action="/delete" method="post">
@@ -34,7 +37,8 @@
                     <input type="submit" value="delete" class="delete">
                 </form>
             </div>
-        </div>
+
+        </div></a></button>
     
         {% endfor %}
         </div>
