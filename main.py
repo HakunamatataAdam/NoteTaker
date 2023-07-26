@@ -22,8 +22,8 @@ def get_db():
 
 
 @app.route('/')
-def index():
-    return render_template('index.html')
+def login_authentication():
+    return render_template('index2.html')
 
 @app.route("/login")
 def login():

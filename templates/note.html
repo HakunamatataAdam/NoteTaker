@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     {% include 'base.html'%}
+    {% include 'notetitle.html'%}
 
 <head>
     <meta charset="UTF-8">
@@ -11,6 +12,13 @@
 <body>
     <div class="notepage">
         {{result}}
+    </div>
+    <div>
+        <form action="/edit" method="post">
+            <input type="text" name="body" value="{{item[3]}}">
+            <input type="intiger" name="id" value="{{item[0]}}">
+            <input type="submit" value="edit" class="edit">
+        </form>
     </div>
 
 
