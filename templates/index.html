@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    {% include "header.html" %}
     {% extends "base.html" %}
 <head>
     <meta charset="UTF-8">
@@ -9,10 +10,11 @@
     <title>main page</title>
 </head>
 {% block content %}
-{% include "header.html" %}
-{% include "index2.html"}
 
-<body>
+    {% if session['user'] %}
+    <!-- the whole user tuple is stored in the session this time- so it's id,username,passwordhash is available to us at all times -->
+        <p>Welcome {{ session['user'][1] }}</p>
+    {% endif %}
 
        </table>
     <form action="/add" method="post">
@@ -43,20 +45,8 @@
         {% endfor %}
         </div>
  
-</body>
-{% endblock %}
-
-<!-- This is how we extend the base layout so we don;t need to do it again! -->
-{% extends 'base.html' %}
-<!-- Now i can fill out the blocks that I want -->
-{% block content %}
-    <h1>My Awesome Site</h1>
-    {% if session['user'] %}
-    <!-- the whole user tuple is stored in the session this time- so it's id,username,passwordhash is available to us at all times -->
-        <p>Welcome {{ session['user'][1] }}</p>
-    {% endif %}
-{% endblock %}
 
 
+        {% endblock %}
 
 </html>
