@@ -1,52 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-    {% include "header.html" %}
-    {% extends "base.html" %}
+{% include "header.html" %}
+{% extends "base.html" %}
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href={{url_for('static', filename='styles.css')}}>
+    <link rel="stylesheet" href={{url_for('static', filename='styles.css' )}}>
     <title>main page</title>
 </head>
 {% block content %}
 
-    {% if session['user'] %}
-    <!-- the whole user tuple is stored in the session this time- so it's id,username,passwordhash is available to us at all times -->
-        <p>Welcome {{ session['user'][1] }}</p>
-    {% endif %}
+{% if session['user'] %}
+<!-- the whole user tuple is stored in the session this time- so it's id,username,passwordhash is available to us at all times -->
+<p>Welcome {{ session['user'][1] }}</p>
+{% endif %}
 
-       </table>
-    <form action="/add" method="post">
-        <h3>Create new notes</h3>
-        <input type="text" name="title">
-        <input type="text" name="body">
-        <input type="integer" name="time">
-        <input type="submit" value="add" class="add">
-    </form>
-            <h2>Notes</h2>
+</table>
+<form action="/add" method="post">
+    <h3>Create new notes</h3>
+    <div class = "add">
+        <label>Name</label><input type="text" name="title">   
+        <label>Note</label><input type="text" name="body">
+        <label>Time</label><input type="integer" name="time">
+        <input type="submit" value="add" class="add_button">
+        
+    </div>
+        
+</form>
+<h2>Notes</h2>
 
-        <div class="container">
-        {% for item in results %}
-        <button><a href="{{url_for('note', id=item[0])}}">{{item[3]}}
-                <ab>{{item[2]}}</ab><div class="card">
-            <div class="notethumb">
+<div class="container">
+    {% for item in results %}
 
-            </div>
-            <div>
-                <form action="/delete" method="post">
-                    <input type="hidden" name="id" value="{{item[0]}}">
-                    <input type="submit" value="delete" class="delete">
-                </form>
-            </div>
+    <div class="card">
+        <a href="{{url_for('note', id=item[0])}}">
+            <p class = W>{{item[3]}}</p></a>
+        <form action="/delete" method="post">
+            <input type="hidden" name="id" value="{{item[0]}}">
+            <input type="submit" value="delete" class="delete">
+        </form>
+        
+    </div>
 
-        </div></a></button>
-    
-        {% endfor %}
-        </div>
- 
+    {% endfor %}
+</div>
 
 
-        {% endblock %}
+
+{% endblock %}
 
 </html>

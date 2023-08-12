@@ -7,8 +7,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
+
 <body>
-    {% block content %}
-    {% endblock %}
-</body>
+    <!-- Add the Navigation Bar in the base template so I don;t have to do it again! -->
+    <nav>
+        <div class="dropdown">
+            <button class="dropbtn">Dropdown</button>
+            <div class="dropdown-content">
+                <a href="/" style="text-decoration:none" class="home">Home</a>
+                <a href="/login" style="text-decoration:none" class="login">Log In</a>
+                <a href="/signup" style="text-decoration:none" class="signup">Sign Up</a>
+                <a href="/logout" style="text-decoration:none" class="logout">Log Out</a>
+            </div>
+          </div>
+        
+    </nav>
+    <!-- This is the main page with most stuff we need in it -->
+    <!-- This starts and ends a 'block' that the child template will fill out with stuff -->
+    {% block content %}{% endblock %}
+
+    <!-- Add the message flashing so we can give the user some feedback about their login process -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class = flash>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
 </html>

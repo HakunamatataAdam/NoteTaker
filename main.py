@@ -40,6 +40,7 @@ def index():
     cur = conn.cursor()
     cur.execute("SELECT * FROM note")
     results = cur.fetchall()
+    print(results)
     conn.close()
     
     return render_template("index.html", results=results)
@@ -92,7 +93,7 @@ def signup():
 
 @app.route('/logout')
 def logout():
-    #just clear the username from the session and redirect back to the home page
+    #clears the username from the session and redirect back to the home page
     session['user'] = None
     return redirect('/')
 
