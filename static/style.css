@@ -92,6 +92,7 @@ ab{
 
 }
 .notepage{
+  width:93%;
   text-align: left;
   background-color: #d8ffd6;
   padding: 30px;
@@ -102,7 +103,7 @@ ab{
   border-width: 5px;
   color: #000000;
   margin: 10px;
-  width: 1000px;
+  
 
 }
 

@@ -112,26 +112,26 @@ def create_note():
 
 
 
-@app.route('/<int:id>/edit', methods=('GET', 'POST'))
-def edit(id):
-    post = get_host_platform(id)
+# @app.route('/<int:id>/edit', methods=('GET', 'POST'))
+# def edit(id):
+#     post = get_host_platform(id)
 
-    if request.method == 'POST':
-        title = request.form['title']
-        note = request.form['note']
+#     if request.method == 'POST':
+#         title = request.form['title']
+#         note = request.form['note']
 
-        if not title:
-            flash('Title is required!')
-        else:
-            conn = get_db()
-            conn.execute('UPDATE posts SET title = ?, content = ?'
-                         ' WHERE id = ?',
-                         (title, note, id))
-            conn.commit()
-            conn.close()
-            return redirect(url_for('index'))
+#         if not title:
+#             flash('Title is required!')
+#         else:
+#             conn = get_db()
+#             conn.execute('UPDATE posts SET title = ?, content = ?'
+#                          ' WHERE id = ?',
+#                          (title, note, id))
+#             conn.commit()
+#             conn.close()
+#             return redirect(url_for('index'))
 
-    return render_template('note.html', post=post)
+#     return render_template('note.html', post=post)
 
 @app.route('/delete', methods=["GET","POST"])
 def delete():
@@ -149,11 +149,23 @@ def note(id):
     conn = sqlite3.connect('notetaker.db')
     cur = conn.cursor()
     result=cur.execute(
-        """ SELECT body, time, title FROM note WHERE id = ?;""",(id,)
+        """ SELECT id, body, time, title FROM note WHERE id = ?;""",(id,)
     ).fetchone()
     print(result)
 
     return render_template('note.html', result=result)
+
+@app.route('/edit', methods=["GET","POST"])
+def edit():
+    body =request.form.get('body')
+    id =request.form.get('id')
+    print(body,id)
+    conn = sqlite3.connect('notetaker.db')
+    cur = conn.cursor()
+    result=cur.execute('UPDATE note SET body = ? WHERE id=?',(body,id))
+    conn.commit()
+    return redirect(url_for('note',id=id))
+
 
 if __name__ == "__main__":
     app.run(debug=True)

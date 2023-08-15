@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-    {% include 'notetitle.html'%}
-    {% include 'base.html'%}
-   
+{% include 'notetitle.html'%}
+{% include 'base.html'%}
+
 
 <head>
     <meta charset="UTF-8">
@@ -10,19 +10,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
+
 <body>
     <div class="notepage">
         {{result}}
-    </div>
-    <div>
-        <form action="/edit" method="post">
-            <input type="text" name="body" value="{{result[3]}}">
-            <input type="intiger" name="id" value="{{result[0]}}">
-            <input type="submit" value="edit" class="edit">
-        </form>
+        <div>
+            <form action="/edit" method="post">
+                <input type="text" name="body" value="{{result[1]}}">
+                <input type="hidden" name="id" value="{{result[0]}}">
+                <input type="submit" value="edit" class="edit">
+            </form>
+        </div>
     </div>
 
-
-</div>
+    </div>
 </body>
+
 </html>
