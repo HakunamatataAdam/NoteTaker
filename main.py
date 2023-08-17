@@ -45,7 +45,6 @@ def index():
     
     return render_template("index.html", results=results)
 
-#Now the cool dynamic route- each image that you click is an anchor tag that 
 #passes an id to this route- we then query for THIS item and send just that 
 #data to a template.
 @app.route('/login', methods=["GET","POST"])
@@ -59,10 +58,8 @@ def login():
         sql = "SELECT * FROM user WHERE username = ?"
         user = query_db(sql=sql,args=(username,),one=True)
         if user:
-            #we got a user!!
             #check password matches-
             if check_password_hash(user[2],password):
-                #we are logged in successfully
                 #Store the username in the session
                 session['user'] = user
                 flash("Logged in successfully")
@@ -149,7 +146,7 @@ def note(id):
     conn = sqlite3.connect('notetaker.db')
     cur = conn.cursor()
     result=cur.execute(
-        """ SELECT id, body, time, title FROM note WHERE id = ?;""",(id,)
+        """ SELECT title, body, time FROM note WHERE id = ?;""",(id,)
     ).fetchone()
     print(result)
 
@@ -166,6 +163,11 @@ def edit():
     conn.commit()
     return redirect(url_for('note',id=id))
 
+
+@app.errorhandler(404)
+def error(e):
+    """404 Page"""
+    return render_template('404.html'), 404
 
 if __name__ == "__main__":
     app.run(debug=True)

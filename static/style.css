@@ -49,7 +49,8 @@ label{
   background-color: #01448b;
 }
 .W{
-  color: #46949e;
+  color: rgb(152, 222, 255);
+  text-decoration: none;
 }
 
 h2{
@@ -94,17 +95,30 @@ ab{
 .notepage{
   width:93%;
   text-align: left;
+  font-size: 20px;
   background-color: #d8ffd6;
   padding: 30px;
   border-radius: 3px; 
-  /* ridge, solid, hidden*/
-  border-style: ridge;   
-  border-color: #60f5a3;
+  border-style: solid;   
+  border-color: #3f79cf;
   border-width: 5px;
   color: #000000;
   margin: 10px;
-  
+  text-decoration: none;
+}
 
+.error{
+  color: #97cddd;
+}
+
+.errorh{
+  color: #97cddd ;
+  font-size: 20px;
+  border: solid 3px #97cddd;
+  border-radius: 5px;
+  background-color: #00000000; 
+  margin: 5px 5px;
+  text-decoration: none
 }
 
 h3{
@@ -156,9 +170,8 @@ background-color: #7af7a3;
 padding: 5px 10px;
 border-radius: 2px ;
 border: 1px solid #13c9a1;
-
-
 }
+
 
 
 
@@ -216,7 +229,7 @@ nav{
   height: 100px;
   border-style: hidden;   
   border-color: #2f7375;
-  border-image: linear-gradient(90deg, rgb(172, 176, 255), #ff000000) 1;
+  border-image: linear-gradient(120deg, rgb(152, 222, 255), #2824ff) 1;
 border-width: 4px;
 border-style: solid;
 width: 15%;
@@ -228,9 +241,9 @@ width: 15%;
   margin: 10px;
   width: 200px;
   height: 100px;
-  border-style: hidden;   
+  border-style: solid;   
   border-color: #090796;
-  border-image: linear-gradient(90deg, rgb(172, 176, 255), #ff000000) 1;
+  border-image: linear-gradient(-120deg, rgb(152, 222, 255), #2824ff) 1;
 border-width: 4px;
 border-style: solid;
 width: 15%;
