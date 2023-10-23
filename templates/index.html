@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href={{url_for('static', filename='styles.css' )}}>
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css' )}}">
     <title>main page</title>
 </head>
 {% block content %}
@@ -18,30 +18,30 @@
 {% endif %}
 
 </table>
+{% if session['user'] != None %}
 <form action="/add" method="post">
     <h3>Create new notes</h3>
     <div class = "add">
-        <label>Name</label><input type="text" name="title">   
+        <label>Title</label><input type="text" name="title">   
         <label>Note</label><input type="text" name="body">
-        <label>Time</label><input type="integer" name="time">
         <input type="submit" value="add" class="add_button">
         
     </div>
-        
+{% endif %}     
 </form>
 <h2>Notes</h2>
 
 <div class="container">
     {% for item in results %}
-
+    {% if session['user'][0] == item[4] %}
     <div class="card">
         <a href="{{url_for('note', id=item[0])}}">
-            <p class = W>{{item[3]}}</p></a>
+            <p class = W>{{item[3]}}</p></a>        
         <form action="/delete" method="post">
             <input type="hidden" name="id" value="{{item[0]}}">
             <input type="submit" value="delete" class="delete">
         </form>
-        
+            {% endif %}
     </div>
 
     {% endfor %}

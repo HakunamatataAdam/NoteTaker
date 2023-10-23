@@ -16,11 +16,13 @@
     <div class="notepage">
         {{result}}
         <div>
+            {% if session['user'] == id %}
             <e><form action="/edit" method="post">
-                <input type="text" name="body" value="{{result[1]}}">
+                <input type="text" name="body" value="{{result[2]}}">
                 <input type="hidden" name="id" value="{{result[0]}}">
                 <input type="submit" value="edit" class="edit"></e>
             </form>
+            {% endif %}
         </div>
     </div>
 
