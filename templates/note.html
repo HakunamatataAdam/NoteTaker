@@ -14,15 +14,15 @@
 
 <body>
     <div class="notepage">
-        {{result}}
+        <h1>{{result[1]}}</h1>
+        <h22>Date:{{result[3]}}</h22>
+        <br><h33>{{result[2]}}</h33><br/>
         <div>
-            {% if session['user'] == id %}
             <e><form action="/edit" method="post">
                 <input type="text" name="body" value="{{result[2]}}">
                 <input type="hidden" name="id" value="{{result[0]}}">
                 <input type="submit" value="edit" class="edit"></e>
             </form>
-            {% endif %}
         </div>
     </div>
 

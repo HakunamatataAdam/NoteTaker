@@ -105,6 +105,12 @@ ab{
   color: #000000;
   margin: 10px;
   text-decoration: none;
+  line-height: 1.5;
+  bottom: 5px;
+}
+
+h33{
+  line-height: 10px;
 }
 
 .error{
@@ -143,6 +149,16 @@ input[type=text]{
 }
 
 input[type=integer]{
+  background-color: #c3f1ff; 
+  width: 200px;
+  padding: 5px 5px;
+  font-size: 15px;
+  margin: 8px 0;
+  border-radius: 5px;
+  border: 3px solid #6ca7eb
+}
+
+input[type=password]{
   background-color: #c3f1ff; 
   width: 200px;
   padding: 5px 5px;
@@ -213,8 +229,13 @@ input[type=integer]{
 }
 
 .loginT{
-  background-color: #5dffdc;
+  color: #50f8f0;
 }
+
+.signupT{
+  color: #50f8f0;
+}
+
 .signup{
   background-image: linear-gradient(98deg, #5dffdc, #ff000000);
   padding: 1px 10px;

@@ -155,7 +155,7 @@ def note(id):
 @app.route('/edit', methods=["GET","POST"])
 def edit():
     body = request.form.get('body')
-    id = request.form.get('id')
+    id = int(request.form.get('id'))
     print(body, id)
     conn = sqlite3.connect('notetaker.db')
     cur = conn.cursor()
