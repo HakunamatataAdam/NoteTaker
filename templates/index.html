@@ -33,16 +33,18 @@
 
 <div class="container">
     {% for item in results %}
-    {% if session['user'][0] == item[4] %}
-    <div class="card">
-        <a href="{{url_for('note', id=item[0])}}">
-            <p class = W>{{item[3]}}</p></a>        
-        <form action="/delete" method="post">
-            <input type="hidden" name="id" value="{{item[0]}}">
-            <input type="submit" value="delete" class="delete">
-        </form>
+    {% if session['user'] %}
+        {% if session['user'][0] == item[4] %}
+        <div class="card">
+            <a href="{{url_for('note', id=item[0])}}">
+                <p class = W>{{item[3]}}</p></a>        
+            <form action="/delete" method="post">
+                <input type="hidden" name="id" value="{{item[0]}}">
+                <input type="submit" value="delete" class="delete">
+            </form>
             
-    </div>
+        </div>
+        {% endif %}
     {% endif %}
     {% endfor %}
 </div>

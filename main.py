@@ -1,11 +1,5 @@
-from distutils.util import get_host_platform
-from flask import Flask, flash,g, render_template, request, redirect, session, url_for
+from flask import Flask, flash, g, render_template, request, redirect, session, url_for
 import sqlite3
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField
-from wtforms.validators import InputRequired, Length, ValidationError
-from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 # app
@@ -15,7 +9,7 @@ DATABASE = 'notetaker.db'
 
 app.config['SECRET_KEY'] = 'uisrth4et485tw6t76t7yf'
 
-
+# gets the database 
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
@@ -33,9 +27,10 @@ def query_db(sql, args=(), one=False):
     db.close()
     return (results[0] if results else None) if one else results
 
-
+# the home page route
 @app.route('/')
 def index():
+    '''takes the notes to the main page'''
     conn = sqlite3.connect("notetaker.db")
     cur = conn.cursor()
     cur.execute("SELECT * FROM note")
@@ -87,49 +82,30 @@ def signup():
         flash("Sign Up Successful")
     return render_template('register.html')
 
-
+# logout route where it logs the player out
 @app.route('/logout')
 def logout():
     # clears the username from the session and redirect back to the home page
     session['user'] = None
     return redirect('/')
 
+# create a new note for the user
 @app.route('/add', methods=['GET', 'POST'])
 def create_note():
     if request.method == 'POST':
-
+        '''it create note with a title and body and uses user_id to make it only accessable to the user who created it '''
         cursor = get_db().cursor()
         title = request.form["title"]
         body = request.form["body"]
         user = session["user"]
+        '''it inserts into the database'''
         sql = "INSERT INTO note(title, body, time, user_id) VALUES (?,?,?,?)"
         cursor.execute(sql, (title, body, datetime.datetime.now(), user[0]))
         get_db().commit()
     return redirect('/')
 
 
-
-# @app.route('/<int:id>/edit', methods=('GET', 'POST'))
-# def edit(id):
-#     post = get_host_platform(id)
-
-#     if request.method == 'POST':
-#         title = request.form['title']
-#         note = request.form['note']
-
-#         if not title:
-#             flash('Title is required!')
-#         else:
-#             conn = get_db()
-#             conn.execute('UPDATE posts SET title = ?, content = ?'
-#                          ' WHERE id = ?',
-#                          (title, note, id))
-#             conn.commit()
-#             conn.close()
-#             return redirect(url_for('index'))
-
-#     return render_template('note.html', post=post)
-
+# it deletes the note when clicked the delete button
 @app.route('/delete', methods=["GET", "POST"])
 def delete():
     id = request.form['id']
@@ -141,6 +117,7 @@ def delete():
 
     return redirect(url_for('index'))
 
+# it feches all the data of a specific note and shows the user when in the note page 
 @app.route('/note/<int:id>')
 def note(id):
     conn = sqlite3.connect('notetaker.db')
@@ -152,18 +129,20 @@ def note(id):
 
     return render_template('note.html', result=result)
 
-@app.route('/edit', methods=["GET","POST"])
+# allows the player to edit the note after created the note from a edit bar on the bottom 
+@app.route('/edit', methods=["GET", "POST"])
 def edit():
     body = request.form.get('body')
     id = int(request.form.get('id'))
     print(body, id)
     conn = sqlite3.connect('notetaker.db')
     cur = conn.cursor()
+    '''after editing the note it updates the data in the database and refreshs the page '''
     result = cur.execute('UPDATE note SET body = ? WHERE id=?', (body, id))
     conn.commit()
     return redirect(url_for('note', id=id))
 
-
+# an error page where it prevent it from breaking site
 @app.errorhandler(404)
 def error(e):
     """404 Page"""
